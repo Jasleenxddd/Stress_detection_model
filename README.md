@@ -33,9 +33,9 @@ The parallel design preserves temporal information that can be weakened when con
 | WESAD | Baseline, stress, and amusement classification | Wearable physiological signals including ECG, EDA, respiration, and acceleration |
 | MUSE | Low, medium, and high valence classification | Multimodal stressed-emotion data |
 | SWELL-KW | Neutral, interruption, and time-pressure classification | Cognitive load and HRV in an office setting |
-| UTD-MHAD | Human activity recognition | Skeleton, depth, and inertial activity data |
+| UTD-MHAD | 27-class human action recognition | Accelerometer and multimodal activity data covering 27 physical actions |
 
-UTD-MHAD was included to test whether the model could separate physical activity from psychological arousal and reduce stress-related false positives.
+UTD-MHAD was included to test whether the model could recognize a wide range of physical actions and help separate physical exertion from psychological arousal, reducing stress-related false positives in more realistic settings.
 
 ## Results
 
@@ -47,6 +47,14 @@ UTD-MHAD was included to test whether the model could separate physical activity
 | UTD-MHAD | 93.33% | - | - | - |
 
 The results show that the same architectural idea can generalize across stress detection, affect recognition, cognitive-load classification, and physical-activity recognition.
+
+### UTD-MHAD result
+
+The CNN-BiLSTM with Attention model achieved **93.33% accuracy on the complete 27-class UTD-MHAD human-action recognition task**. The confusion matrix showed a strong diagonal across the action classes, indicating that the model learned discriminative patterns for different forms of physical activity.
+
+This experiment addressed an important practical challenge in stress monitoring: physical exertion can produce physiological responses similar to psychological stress. Recognizing physical actions helps a future stress-monitoring system avoid treating activity-induced arousal as a stress event.
+
+The final presentation reports accuracy for this experiment but does not provide aggregate precision, recall, or F1-score, so those values are intentionally left unreported above.
 
 ## Technology
 

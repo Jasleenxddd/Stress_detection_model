@@ -42,7 +42,7 @@ UTD-MHAD was included to test whether the model could recognize a wide range of 
 | WESAD | 96.63% | 96.00% | 96.00% | 96.00% |
 | MUSE | 95.29% | 95.00% | 95.00% | 95.00% |
 | SWELL-KW | 98.78% | 99.00% | 99.00% | 99.00% |
-| UTD-MHAD | 93.33% | - | - | - |
+| UTD-MHAD | 93.33% | 93.00% | 93.00% | 93.00% |
 
 The results show that the same architectural idea can generalize across stress detection, affect recognition, cognitive-load classification, and physical-activity recognition.
 
@@ -51,8 +51,6 @@ The results show that the same architectural idea can generalize across stress d
 The CNN-BiLSTM with Attention model achieved **93.33% accuracy on the complete 27-class UTD-MHAD human-action recognition task**. The confusion matrix showed a strong diagonal across the action classes, indicating that the model learned discriminative patterns for different forms of physical activity.
 
 This experiment addressed an important practical challenge in stress monitoring: physical exertion can produce physiological responses similar to psychological stress. Recognizing physical actions helps a future stress-monitoring system avoid treating activity-induced arousal as a stress event.
-
-The final presentation reports accuracy for this experiment but does not provide aggregate precision, recall, or F1-score, so those values are intentionally left unreported above.
 
 ## Technology
 

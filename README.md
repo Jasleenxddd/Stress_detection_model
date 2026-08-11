@@ -1,10 +1,8 @@
 # HABC: Stress, Affect, and Activity Recognition
 
-This repository contains work from our B.Tech project on classifying human stress, affect, cognitive load, and physical activity from wearable and multimodal sensor data.
+This repository contains B.Tech project work on classifying human stress, affect, cognitive load, and physical activity from wearable and multimodal sensor data.
 
 We developed the **Hybrid Attention-Based CNN-BiLSTM Classifier (HABC)**, a parallel deep-learning architecture that learns local signal patterns and long-range temporal dependencies at the same time. The project was evaluated across four public datasets covering physiological signals, emotion, cognitive load, and human activity.
-
-> This is a team project completed at ABV-IIITM Gwalior under the supervision of Dr. Anjali.
 
 ## Why this project?
 
@@ -107,15 +105,6 @@ The final presentation reports accuracy for this experiment but does not provide
 - Improve robustness to missing values and motion artifacts.
 - Evaluate additional modalities such as PPG, blood pressure, and accelerometer signals.
 - Validate subject-independent generalization for practical wearable deployment.
-
-## Team
-
-- Aswad Kulkarni (2022IMG017)
-- Jasleen Kaur (2022IMG025)
-- Prashant Sharma (2022IMG048)
-- Yash Padme (2022IMG069)
-
-**Supervisor:** Dr. Anjali, Department of Information Technology, ABV-IIITM Gwalior.
 
 ## Responsible use
 

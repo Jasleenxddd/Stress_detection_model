@@ -1,4 +1,4 @@
-﻿# Python environments and caches
+# Python environments and caches
 .venv/
 venv/
 __pycache__/
@@ -31,8 +31,8 @@ output/
 
 # Generated training artifacts (preserved on disk)
 /results/**
-!/results/WESAD_RUN_GUIDE.md
-!/results/README.md
+
+
 *.keras
 *.h5
 *.hdf5

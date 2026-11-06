@@ -1,48 +1,91 @@
-# Sensor Time-Series Classification
+# Stress, Affect, and Activity Recognition
 
-Research code for stress, affective-descriptor and activity classification using CNN, BiLSTM and attention models. The repository retains the experiment notebooks and local datasets; manuscript and Overleaf sources are excluded.
+A deep learning research project exploring stress detection, affective descriptors, cognitive states, and human activity using physiological and sensor data.
 
-## Main code
+The project implements a Hybrid Attention-Based CNN-BiLSTM Classifier (HABC), combining parallel convolutional and recurrent branches with attention and feature fusion.
 
-| File | Purpose |
-| --- | --- |
-| `codes/wesad_corrected.py` | Corrected WESAD preprocessing and pilot/model builders |
-| `codes/wesad_suite.py` | Resumable WESAD subject-independent evaluation suite |
-| `Wesad_Colab_Run.ipynb` | Colab launcher for the corrected WESAD suite |
-| `MuSe_Corrected_Colab.ipynb` | Corrected supplementary MuSe descriptor experiment |
-| `UTD1_Experiment.ipynb` | Original UTD-MHAD experiment and ablations |
-| `Wesad_Corrected_Pilot.ipynb` | Corrected WESAD pilot notebook |
+## Model Overview
 
-Original experiment notebooks (`Wesad1_Experiment.ipynb`, `Muse1_Experiment.ipynb`, `Swell_KW_1_Experiment.ipynb`, `Copy_of_BTP_UTD (1).ipynb`) and the other files in `codes/` are retained for provenance. They use older protocols and are not interchangeable with the corrected evaluations. Notebook execution outputs have been cleared for source control; original executed notebooks are in the local cleanup backup.
+The architecture consists of:
 
-## Setup
+- **CNN branch:** learns patterns from the input representation.
+- **BiLSTM branch:** models relationships across encoded input positions in both directions.
+- **Attention mechanism:** assigns weights to recurrent hidden states.
+- **Feature fusion and classification:** combines branch embeddings and predicts class probabilities through dense layers and softmax.
 
-Use Python 3.11 or newer with a compatible TensorFlow release, or open the Colab notebooks in Google Colab.
+Input representations and output classes depend on the dataset and experiment.
 
-```powershell
-python -m venv .venv
-.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+## Datasets
+
+| Dataset | Focus | Input |
+| --- | --- | --- |
+| WESAD | Stress and affect classification | Wearable physiological signals |
+| SWELL-KW | Cognitive-state analysis | HRV and behavioral features |
+| MuSe | Affective-descriptor classification | Valence, arousal, dominance, and tag counts |
+| UTD-MHAD | Human activity recognition | Skeleton joint recordings |
+
+Dataset files are organized under `datasets/`. WESAD recordings must be obtained separately and placed in `datasets/WESAD/`. Refer to each notebook for its required input files and paths.
+
+## Repository Structure
+
+```text
+codes/                         Python scripts and supporting notebooks
+datasets/                     Dataset files and loading information
+MuSe_Corrected_Colab.ipynb      MuSe training and evaluation
+UTD1_Experiment.ipynb          UTD-MHAD experiments
+Wesad1_Experiment.ipynb         WESAD experiments
+Wesad_Colab_Run.ipynb           WESAD Colab launcher
+Wesad_Corrected_Pilot.ipynb     WESAD pilot experiment
+Muse1_Experiment.ipynb          MuSe experiments
+Swell_KW_1_Experiment.ipynb     SWELL-KW experiments
+Copy_of_BTP_UTD (1).ipynb       UTD-MHAD implementation
+requirements.txt               Python dependencies
 ```
 
-Run from the repository root:
+## Getting Started
+
+Clone the repository:
+
+```bash
+git clone https://github.com/Jasleenxddd/Stress_detection_model.git
+cd Stress_detection_model
+```
+
+Create a Python virtual environment and install dependencies:
+
+```bash
+python -m venv .venv
+```
+
+On Windows:
+
+```powershell
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe -m jupyter notebook
+```
+
+On Linux or macOS:
+
+```bash
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+python -m jupyter notebook
+```
+
+Open the notebook for the desired dataset, set the dataset paths, and run the cells in order. Colab notebooks can also be uploaded to Google Colab.
+
+To launch the WESAD evaluation suite from the project root:
 
 ```powershell
 .\.venv\Scripts\python.exe -u codes/wesad_suite.py
 ```
 
-The WESAD suite creates `results/wesad_complete/` when run. Do not start duplicate workers against the same output folder. Existing local results were moved to `.local_archive/results_backup_*`; restore the appropriate directory before resuming a previous run.
+## Experiments
 
-The MuSe Colab notebook defaults to `MyDrive/MuSe_paper2/muse_v3.csv`. To use temporary Colab storage, upload the CSV to `/content`, set `CSV_PATH = Path('/content/muse_v3.csv')`, remove the Drive mount, and set `OUT = Path('/content/muse_results') / stamp`. Download the results archive before the session ends.
+The code includes dataset-specific preprocessing, model training, baseline comparisons, component ablations, and evaluation using accuracy, precision, recall, F1-score, and confusion matrices. Selected experiments also examine subject-based generalization, additive noise, and missing input values.
 
-## Datasets and results
+MuSe classes are defined from valence-arousal regions and are evaluated as a descriptor classification task. Interpret each experiment according to its input representation and evaluation protocol.
 
-See `datasets/README.md` for the local layout. All existing dataset files are preserved. WESAD recordings exceed ordinary GitHub file limits and are excluded from Git; obtain them separately or explicitly configure Git LFS before publishing them. Smaller local datasets remain eligible for Git tracking. Dataset ownership and licenses remain with their respective providers.
+## Technology Stack
 
-Generated checkpoints, predictions, caches and run records are excluded from Git. The previous results folder is preserved in `.local_archive/results_backup_*` and has been removed from the current project layout.
-
-## Interpretation
-
-- MuSe labels are constructed from valence/arousal predictors. Its scores describe a supplementary label-aligned descriptor task, not independent emotion recognition.
-- The original UTD implementation processes 20 joint-indexed steps containing flattened coordinate histories. Attention is over those encoded positions, not frame times.
-- The original SWELL notebook does not establish participant-independent evaluation with verified participant identifiers.
-- Use corrected run artifacts and their exact protocols for reporting; do not mix scores from different fits or splits.
+Python, TensorFlow/Keras, NumPy, Pandas, SciPy, scikit-learn, Matplotlib, Seaborn, Jupyter Notebook, and Google Colab.

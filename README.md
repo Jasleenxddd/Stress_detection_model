@@ -1,109 +1,48 @@
-# HABC: Stress, Affect, and Activity Recognition
+﻿# Sensor Time-Series Classification
 
-This repository contains B.Tech project work on classifying human stress, affect, cognitive load, and physical activity from wearable and multimodal sensor data.
+Research code for stress, affective-descriptor and activity classification using CNN, BiLSTM and attention models. The repository retains the experiment notebooks and local datasets; manuscript and Overleaf sources are excluded.
 
-We developed the **Hybrid Attention-Based CNN-BiLSTM Classifier (HABC)**, a parallel deep-learning architecture that learns local signal patterns and long-range temporal dependencies at the same time. The project was evaluated across four public datasets covering physiological signals, emotion, cognitive load, and human activity.
+## Main code
 
-## Why this project?
+| File | Purpose |
+| --- | --- |
+| `codes/wesad_corrected.py` | Corrected WESAD preprocessing and pilot/model builders |
+| `codes/wesad_suite.py` | Resumable WESAD subject-independent evaluation suite |
+| `Wesad_Colab_Run.ipynb` | Colab launcher for the corrected WESAD suite |
+| `MuSe_Corrected_Colab.ipynb` | Corrected supplementary MuSe descriptor experiment |
+| `UTD1_Experiment.ipynb` | Original UTD-MHAD experiment and ablations |
+| `Wesad_Corrected_Pilot.ipynb` | Corrected WESAD pilot notebook |
 
-Wearable sensors make continuous mental-health and activity monitoring possible, but their signals are noisy, multimodal, and highly dependent on context. A reliable system must learn both:
+Original experiment notebooks (`Wesad1_Experiment.ipynb`, `Muse1_Experiment.ipynb`, `Swell_KW_1_Experiment.ipynb`, `Copy_of_BTP_UTD (1).ipynb`) and the other files in `codes/` are retained for provenance. They use older protocols and are not interchangeable with the corrected evaluations. Notebook execution outputs have been cleared for source control; original executed notebooks are in the local cleanup backup.
 
-- **Spatial features**, such as localized waveform patterns in ECG or rapid changes in EDA.
-- **Temporal features**, such as how heart rate, respiration, or motion evolves over time.
+## Setup
 
-It must also distinguish psychological stress from physical exertion, since both can produce similar physiological responses.
+Use Python 3.11 or newer with a compatible TensorFlow release, or open the Colab notebooks in Google Colab.
 
-## Model architecture
+```powershell
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+```
 
-HABC processes every input through two parallel branches:
+Run from the repository root:
 
-1. **CNN branch** - extracts localized and morphological signal features.
-2. **BiLSTM + Attention branch** - captures bidirectional temporal dependencies and gives greater weight to informative time steps.
-3. **Feature fusion** - concatenates the representations learned by both branches.
-4. **Classifier** - maps the fused representation to the target classes.
+```powershell
+.\.venv\Scripts\python.exe -u codes/wesad_suite.py
+```
 
-The parallel design preserves temporal information that can be weakened when convolution and recurrent layers are arranged sequentially.
+See `results/WESAD_RUN_GUIDE.md` for subject splits, runtime settings, progress tracking and resume behavior. Do not start duplicate workers against the same results folder. A stale status file is not proof that a run is currently active or complete.
 
-## Datasets
+The MuSe Colab notebook defaults to `MyDrive/MuSe_paper2/muse_v3.csv`. To use temporary Colab storage, upload the CSV to `/content`, set `CSV_PATH = Path('/content/muse_v3.csv')`, remove the Drive mount, and set `OUT = Path('/content/muse_results') / stamp`. Download the results archive before the session ends.
 
-| Dataset | Task | Modalities / context |
-| --- | --- | --- |
-| WESAD | Baseline, stress, and amusement classification | Wearable physiological signals including ECG, EDA, respiration, and acceleration |
-| MUSE | Low, medium, and high valence classification | Multimodal stressed-emotion data |
-| SWELL-KW | Neutral, interruption, and time-pressure classification | Cognitive load and HRV in an office setting |
-| UTD-MHAD | 27-class human action recognition | Accelerometer and multimodal activity data covering 27 physical actions |
+## Datasets and results
 
-UTD-MHAD was included to test whether the model could recognize a wide range of physical actions and help separate physical exertion from psychological arousal, reducing stress-related false positives in more realistic settings.
+See `datasets/README.md` for the local layout. All existing dataset files are preserved. WESAD recordings exceed ordinary GitHub file limits and are excluded from Git; obtain them separately or explicitly configure Git LFS before publishing them. Smaller local datasets remain eligible for Git tracking. Dataset ownership and licenses remain with their respective providers.
 
-## Results
+Existing checkpoints, predictions, cache files and run records remain in `results/` locally and are excluded from Git. Preserve them when resuming or validating experiments.
 
-| Dataset | Accuracy | Precision | Recall | F1-score |
-| --- | ---: | ---: | ---: | ---: |
-| WESAD | 96.63% | 96.00% | 96.00% | 96.00% |
-| MUSE | 95.29% | 95.00% | 95.00% | 95.00% |
-| SWELL-KW | 98.78% | 99.00% | 99.00% | 99.00% |
-| UTD-MHAD | 93.33% | 93.00% | 93.00% | 93.00% |
+## Interpretation
 
-The results show that the same architectural idea can generalize across stress detection, affect recognition, cognitive-load classification, and physical-activity recognition.
-
-### UTD-MHAD result
-
-The CNN-BiLSTM with Attention model achieved **93.33% accuracy on the complete 27-class UTD-MHAD human-action recognition task**. The confusion matrix showed a strong diagonal across the action classes, indicating that the model learned discriminative patterns for different forms of physical activity.
-
-This experiment addressed an important practical challenge in stress monitoring: physical exertion can produce physiological responses similar to psychological stress. Recognizing physical actions helps a future stress-monitoring system avoid treating activity-induced arousal as a stress event.
-
-## Technology
-
-- Python
-- TensorFlow and Keras
-- Scikit-learn
-- NumPy and Pandas
-- Matplotlib
-- Jupyter Notebook
-
-## Repository contents
-
-- `Copy_of_BTP_UTD.ipynb` - preprocessing, model construction, training, and evaluation for the UTD-MHAD experiment.
-- `utd (2)/utd/` - UTD-MHAD skeleton samples and prepared datasets used by the notebook.
-
-## Getting started
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/Jasleenxddd/Stress_detection_model.git
-   cd Stress_detection_model
-   ```
-
-2. Create an environment and install the core dependencies:
-
-   ```bash
-   pip install tensorflow keras scikit-learn numpy pandas matplotlib scipy jupyter
-   ```
-
-3. Start Jupyter Notebook:
-
-   ```bash
-   jupyter notebook
-   ```
-
-4. Open `Copy_of_BTP_UTD.ipynb` and update dataset paths if required before running the cells.
-
-## Limitations
-
-- Performance can decline as the proportion of missing sensor values increases.
-- The full study should be extended to more datasets and wearable-sensor modalities.
-- Real-world deployment requires additional validation across unseen users, devices, and noisy environments.
-- This repository currently focuses on the UTD-MHAD implementation; the report covers the broader four-dataset evaluation.
-
-## Future work
-
-- Apply attention to CNN features or after feature fusion.
-- Explore alternative dense-layer activation functions.
-- Improve robustness to missing values and motion artifacts.
-- Evaluate additional modalities such as PPG, blood pressure, and accelerometer signals.
-- Validate subject-independent generalization for practical wearable deployment.
-
-## Responsible use
-
-This project is intended for research and educational use. It is not a medical diagnostic system and should not be used as a substitute for professional healthcare advice.
+- MuSe labels are constructed from valence/arousal predictors. Its scores describe a supplementary label-aligned descriptor task, not independent emotion recognition.
+- The original UTD implementation processes 20 joint-indexed steps containing flattened coordinate histories. Attention is over those encoded positions, not frame times.
+- The original SWELL notebook does not establish participant-independent evaluation with verified participant identifiers.
+- Use corrected run artifacts and their exact protocols for reporting; do not mix scores from different fits or splits.
